@@ -64,22 +64,6 @@ def open_pureref_file(
     execute_pureref_command([f"{filepath}"], communicator)
 
 
-def pre_pureref_exit(communicator: CommunicationWrapper = None) -> None:
-    """Close previous workfile when opening/saving a workfile.
-
-    Note that this will *not* wait around for the PureRef command to run or
-    for its completion. Nor will errors in the command be detected or raised.
-
-    Args:
-        communicator (CommunicationWrapper, optional): The communicator to use.
-            If not provided, the default communicator will be used.
-    """
-    if communicator is None:
-        communicator = CommunicationWrapper.communicator
-    command = ["-c", "exit"]
-    execute_pureref_command(command, communicator)
-
-
 def save_pureref_file(
     prev_filepath: str,
     file_path: str,
@@ -113,8 +97,6 @@ def save_pureref_file(
         "-c", "exit",
     ]
     execute_pureref_command(command, communicator)
-    # Wait a bit for the file to be saved before returning
-    time.sleep(0.8)
     # asking PureRef to load back the latest file
     execute_pureref_command([f"{file_path}"], communicator)
     return file_path
@@ -170,13 +152,3 @@ def export_pureref_image(
     ]
 
     execute_pureref_command(command, communicator)
-
-    # Wait until the image file exists (with timeout)
-    timeout = kwargs.get("timeout", 60)  # default 60s
-    start = time.time()
-    while True:
-        if os.path.isfile(file_path):
-            break
-        if time.time() - start > timeout:
-            raise PublishError(f"Export timed out: {file_path} not created")
-        time.sleep(2)

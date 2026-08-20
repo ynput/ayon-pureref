@@ -17,7 +17,7 @@ class ConfigurePureRefSettings(PreLaunchHook):
     def execute(self) -> None:
         """Set the PureRef settings.ini file path to the launch arguments."""
         settings_ini_path = os.path.join(
-            PUREREF_ADDON_ROOT, "api", "configuration", "PureRef.ini"
+            PUREREF_ADDON_ROOT, "api", "configuration", "pureref.ini"
         )
         # ask the system to install the settings.ini file as the
         # default PureRef settings
