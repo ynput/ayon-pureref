@@ -17,6 +17,12 @@ class ExtractImageSettings(BaseSettingsModel):
         enum_resolver=image_format_enum,
         title="Image extension"
     )
+    timeout: int = SettingsField(
+        title="Timeout",
+        description=("Timeout in seconds for the export to complete."
+                     " Tweak this value if you have a large image file and "
+                     "the export takes longer than expected.")
+    )
     resolution_width: int = SettingsField(title="Resolution width")
     resolution_height: int = SettingsField(title="Resolution height")
     canvas_background: bool = SettingsField(title="Canvas background")
@@ -43,6 +49,7 @@ DEFAULT_PUREREF_VALUES = {
     "publish": {
         "ExtractImage": {
             "extension": "png",
+            "timeout": 60,
             "resolution_width": 1920,
             "resolution_height": 1080,
             "canvas_background": False,

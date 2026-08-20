@@ -1,7 +1,10 @@
+"""Useful functions to communicate with PureRef."""
 from __future__ import annotations
 
 import os
 import time
+
+from ayon_core.pipeline import PublishError
 
 from .communication_server import CommunicationWrapper
 
@@ -117,52 +120,63 @@ def save_pureref_file(
     return file_path
 
 
-def save_current_pureref_file(
-    file_path: str,
-    communicator: CommunicationWrapper = None
-) -> None:
-    """Save the current PureRef file.
-
-    Note that this will *not* wait around for the PureRef command to run or
-    for its completion. Nor will errors in the command be detected or raised.
-
-    Args:
-        file_path (str): Path to save the PureRef file.
-        communicator (CommunicationWrapper, optional): The communicator to use.
-            If not provided, the default communicator will be used.
-
-    """
-    if communicator is None:
-        communicator = CommunicationWrapper.communicator
-    command = [
-        "-c", f"save;{file_path}",
-    ]
-    execute_pureref_command(command, communicator)
-
-
 def export_pureref_image(
+    current_workfile: str,
     file_path: str,
     communicator: CommunicationWrapper = None,
     **kwargs
 ) -> None:
     """Export the current PureRef file as an image.
 
-    Note that this will *not* wait around for the PureRef command to run or
-    for its completion. Nor will errors in the command be detected or raised.
-
     Args:
-        file_path (str): Path to export the PureRef image.
+        current_workfile (str): Path to the current PureRef file.
+        file_path (str): Path to save the exported image.
         communicator (CommunicationWrapper, optional): The communicator to use.
             If not provided, the default communicator will be used.
+        **kwargs: Additional keyword arguments to pass to the export command.
+            Supported arguments:
+                - resolutionWidth (int): The width of the exported image.
+                - resolutionHeight (int): The height of the exported image.
+                - canvas_background (bool): Whether to include the canvas
+                    background in the exported image.
+                - image_borders (bool): Whether to include image borders in the
+                    exported image.
+                - include_children (bool): Whether to include children in the
+                    exported image.
+                - timeout (int): The maximum time to wait for the export to
+                    complete, in seconds. Default is 60 seconds.
+
+    Raises:
+        PublishError: If the export times out and the image file is not
+            created.
     """
     if communicator is None:
         communicator = CommunicationWrapper.communicator
+
+    # Build the exportScene command in one string
+    export_cmd = (
+        f"exportScene;{file_path};"
+        f"{kwargs.get('resolutionWidth', 1920)};"
+        f"{kwargs.get('resolutionHeight', 1080)};"
+        f"{'true' if kwargs.get('canvas_background') else 'false'};"
+        f"{'true' if kwargs.get('image_borders') else 'false'};"
+        f"{'true' if kwargs.get('include_children') else 'false'}"
+    )
+
     command = [
-        "-c", f"exportScene;{file_path}",
-        f"{kwargs.get('resolutionWidth', 1920)};",
-        f"{kwargs.get('resolutionHeight', 1080)};",
-        "true;" if kwargs.get("canvas_background") else "false;",
-        "true;" if kwargs.get("image_borders") else "false;",
-        "true;" if kwargs.get("include_children") else "false;",
+        "-c", f"load;{current_workfile}",
+        "-c", export_cmd,
+        "-c", "exit",
     ]
+
     execute_pureref_command(command, communicator)
+
+    # Wait until the image file exists (with timeout)
+    timeout = kwargs.get("timeout", 60)  # default 60s
+    start = time.time()
+    while True:
+        if os.path.isfile(file_path):
+            break
+        if time.time() - start > timeout:
+            raise PublishError(f"Export timed out: {file_path} not created")
+        time.sleep(2)
