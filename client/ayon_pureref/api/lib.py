@@ -2,11 +2,31 @@
 from __future__ import annotations
 
 import os
-import time
+import platform
 
-from ayon_core.pipeline import PublishError
+from pynput.keyboard import Controller, Key
 
 from .communication_server import CommunicationWrapper
+
+
+def save_file_with_hotkey() -> None:
+    """Save file using the appropriate hotkey for the OS.
+
+    This function simulates the keyboard shortcut for saving a file in PureRef.
+    Hacky way to save the file, but PureRef doesn't have a reliable
+    command for saving the file.
+    """
+    kb = Controller()
+    if platform.system() == "Darwin":
+        kb.press(Key.cmd)
+        kb.press("s")
+        kb.release("s")
+        kb.release(Key.cmd)
+    else:
+        kb.press(Key.ctrl)
+        kb.press("s")
+        kb.release("s")
+        kb.release(Key.ctrl)
 
 
 def get_workdir() -> str:
@@ -91,6 +111,7 @@ def save_pureref_file(
     create_pur_file(file_path)
     if communicator is None:
         communicator = CommunicationWrapper.communicator
+    save_file_with_hotkey()
     command = [
         "-c", f"load;{prev_filepath}",
         "-c", f"save;{file_path}",
@@ -125,12 +146,6 @@ def export_pureref_image(
                     exported image.
                 - include_children (bool): Whether to include children in the
                     exported image.
-                - timeout (int): The maximum time to wait for the export to
-                    complete, in seconds. Default is 60 seconds.
-
-    Raises:
-        PublishError: If the export times out and the image file is not
-            created.
     """
     if communicator is None:
         communicator = CommunicationWrapper.communicator

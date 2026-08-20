@@ -4,6 +4,7 @@ import os
 import pyblish.api
 from ayon_core.host.interfaces import SaveWorkfileOptionalData
 from ayon_core.pipeline.workfile import save_next_version
+from ayon_pureref.api.lib import save_file_with_hotkey
 
 
 class IncrementWorkfileVersion(pyblish.api.ContextPlugin):
@@ -17,6 +18,7 @@ class IncrementWorkfileVersion(pyblish.api.ContextPlugin):
     def process(self, context):
         path = context.data["currentFile"]
         current_filename = os.path.basename(path)
+        save_file_with_hotkey()
         save_next_version(
             description=(
                 f"Incremented by publishing from {current_filename}"
