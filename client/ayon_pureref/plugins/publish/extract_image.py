@@ -5,7 +5,7 @@ import pyblish.api
 from ayon_core.lib import BoolDef, NumberDef
 from ayon_core.pipeline import publish
 from ayon_core.pipeline.publish import AYONPyblishPluginMixin
-from ayon_pureref.api.lib import export_pureref_image
+from ayon_pureref.api.lib import export_pureref_image, save_file_with_hotkey
 
 
 class ExtractImage(publish.Extractor,
@@ -20,7 +20,6 @@ class ExtractImage(publish.Extractor,
     settings_category = "pureref"
     # settings
     extension = "png"
-    timeout = 60
     resolution_width = 1920
     resolution_height = 1080
     canvas_background = False
@@ -32,6 +31,7 @@ class ExtractImage(publish.Extractor,
         filename = f"{instance.name}.{self.extension}"
         filepath = os.path.join(staging_dir, filename)
         attr_values = self.get_attr_values_from_data(instance.data)
+        save_file_with_hotkey()
         export_pureref_image(
             instance.context.data["currentFile"],
             filepath,
@@ -40,7 +40,6 @@ class ExtractImage(publish.Extractor,
             canvasBackground=attr_values.get("canvasBackground", False),
             imageBorders=attr_values.get("imageBorders", False),
             includeChildren=attr_values.get("includeChildren", False),
-            timeout=self.timeout,
         )
 
         if "representations" not in instance.data:
