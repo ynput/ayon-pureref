@@ -159,7 +159,7 @@ class PureRefHost(HostBase, IWorkfileHost, ILoadHost, IPublishHost):
         return write_workfile_metadata(PUREREF_METADATA_CREATE_CONTEXT, data)
 
     def get_context_data(self):
-        return get_load_workfile_metadata(PUREREF_METADATA_CREATE_CONTEXT)
+        return get_load_context_metadata(PUREREF_METADATA_CREATE_CONTEXT)
 
 
 def containerise(
@@ -380,7 +380,8 @@ def copy_ayon_data(filepath):
                 shutil.copy(src_json, dst_json)
 
 
-def get_load_context_metadata() -> dict:
+def get_load_context_metadata(
+        context_name: str =PUREREF_SECTION_NAME_CONTEXT) -> dict:
     """Get the context data from the related json file
     ("context.json") which stores in .pureref_metadata/context
     folder in the project work directory.
@@ -388,13 +389,16 @@ def get_load_context_metadata() -> dict:
     The context data includes the project name, folder path and
     task name.
 
+    Args:
+        context_name (str): name of the context
+
     Returns:
         dict: context data
-    """
+    """  # ruff: ignore[missing-blank-line-after-summary]
     file_content = {}
     work_dir = get_workdir()
     json_dir = os.path.join(
-        work_dir, ".pureref_metadata", PUREREF_SECTION_NAME_CONTEXT).replace(
+        work_dir, ".pureref_metadata", context_name).replace(
             "\\", "/"
         )
     if not os.path.exists(json_dir):
