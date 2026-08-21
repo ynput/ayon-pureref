@@ -5,7 +5,7 @@ import pyblish.api
 from ayon_core.lib import BoolDef, NumberDef, UISeparatorDef, UILabelDef
 from ayon_core.pipeline import publish
 from ayon_core.pipeline.publish import AYONPyblishPluginMixin
-from ayon_pureref.api.lib import export_pureref_image, save_file_with_hotkey
+from ayon_pureref.api.lib import export_pureref_image
 
 
 class ExtractImage(publish.Extractor,
@@ -31,7 +31,6 @@ class ExtractImage(publish.Extractor,
         filename = f"{instance.name}.{self.extension}"
         filepath = os.path.join(staging_dir, filename)
         attr_values = self.get_attr_values_from_data(instance.data)
-        save_file_with_hotkey()
         export_pureref_image(
             instance.context.data["currentFile"],
             filepath,
