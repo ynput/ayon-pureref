@@ -2,7 +2,7 @@
 import os
 
 import pyblish.api
-from ayon_core.lib import BoolDef, NumberDef
+from ayon_core.lib import BoolDef, NumberDef, UISeparatorDef, UILabelDef
 from ayon_core.pipeline import publish
 from ayon_core.pipeline.publish import AYONPyblishPluginMixin
 from ayon_pureref.api.lib import export_pureref_image, save_file_with_hotkey
@@ -65,6 +65,8 @@ class ExtractImage(publish.Extractor,
             list[dict]: The attribute definitions for the plugin.
         """
         return [
+            UISeparatorDef("sep_extract_image_options"),
+            UILabelDef("Extract Image Options"),
             NumberDef("resolutionWidth",
                       label="Resolution width",
                       decimals=0,
