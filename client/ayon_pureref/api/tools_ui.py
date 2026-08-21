@@ -23,7 +23,7 @@ class ToolsBtnsWidget(QtWidgets.QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(load_btn, 0)
         layout.addWidget(publish_btn, 0)
-        layout.addWidget(workfile_btn , 0)
+        layout.addWidget(workfile_btn, 0)
         layout.addStretch(1)
 
         load_btn.clicked.connect(self._on_load)
