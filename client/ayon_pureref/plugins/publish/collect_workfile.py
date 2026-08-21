@@ -32,7 +32,5 @@ class CollectWorkfile(pyblish.api.InstancePlugin):
             "files": filename,
             "stagingDir": dirpath
         })
-
-        self.log.info(
-            f"Collected workfile instance: {json.dumps(instance.data, indent=4)}"
-        )
+        data = json.dumps(instance.data, indent=4)
+        self.log.info(f"Collected workfile instance: {data}")

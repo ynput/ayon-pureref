@@ -5,7 +5,6 @@ from ayon_pureref.api.lib import open_pureref_file
 from ayon_pureref.api.pipeline import containerise
 
 
-
 class LoadImage(load.LoaderPlugin):
     """Load still image into Nuke"""
 

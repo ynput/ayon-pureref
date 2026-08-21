@@ -202,7 +202,7 @@ def containerise(
 
 
 def save_current_workfile_context(context: dict) -> None:
-    """Save current workfile context data to `.pureref_metadata/{workfile}/key`.
+    """Save current workfile context data to`.pureref_metadata/{workfile}/key`.
 
     This persists the current in-memory context to be set for a specific
     workfile on disk. Usually used on save to persist the local sessions'
@@ -237,11 +237,11 @@ def write_context_metadata(metadata_key: str, context: dict) -> None:
     os.makedirs(json_dir, exist_ok=True)
     json_file = f"{json_dir}/{metadata_key}.json"
     if os.path.exists(json_file):
-        with open (json_file, "r") as file:
+        with open(json_file, "r") as file:
             value = json.load(file)
             if value == context:
                 return
-    with open (json_file, "w") as file:
+    with open(json_file, "w") as file:
         value = json.dumps(context)
         file.write(value)
         file.close()
@@ -271,7 +271,7 @@ def write_workfile_metadata(metadata_key: str, data=None) -> None:
             "\\", "/"
         )
     os.makedirs(json_dir, exist_ok=True)
-    with open (f"{json_dir}/{metadata_key}.json", "w") as file:
+    with open(f"{json_dir}/{metadata_key}.json", "w") as file:
         value = json.dumps(data)
         file.write(value)
         file.close()
@@ -381,7 +381,7 @@ def copy_ayon_data(filepath):
 
 
 def get_load_context_metadata(
-        context_name: str =PUREREF_SECTION_NAME_CONTEXT) -> dict:
+        context_name: str = PUREREF_SECTION_NAME_CONTEXT) -> dict:
     """Get the context data from the related json file
     ("context.json") which stores in .pureref_metadata/context
     folder in the project work directory.
@@ -407,7 +407,7 @@ def get_load_context_metadata(
     if not file_list:
         return file_content
     for file in file_list:
-        with open (f"{json_dir}/{file}", "r") as data:
+        with open(f"{json_dir}/{file}", "r") as data:
             content = ast.literal_eval(str(data.read().strip()))
             file_content.update(content)
             data.close()
@@ -449,7 +449,7 @@ def get_load_workfile_metadata(metadata_key: str) -> list[dict]:
     if not file_list:
         return file_content
     for file in file_list:
-        with open (f"{json_dir}/{file}", "r") as data:
+        with open(f"{json_dir}/{file}", "r") as data:
             content = json.load(data)
             file_content.extend(content)
             data.close()
@@ -521,7 +521,7 @@ def get_instance_workfile_metadata() -> list[dict]:
     if not os.path.exists(json_dir) or not os.listdir(json_dir):
         return file_content
     for file in os.listdir(json_dir):
-        with open (f"{json_dir}/{file}", "r") as data:
+        with open(f"{json_dir}/{file}", "r") as data:
             file_content = json.load(data)
 
     return file_content

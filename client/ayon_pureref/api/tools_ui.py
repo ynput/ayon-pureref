@@ -8,7 +8,6 @@ from ayon_core.tools.utils.lib import qt_app_context
 from ayon_core.tools.utils import host_tools
 
 
-
 class ToolsBtnsWidget(QtWidgets.QWidget):
     """Widget containing buttons which are clickable."""
     tool_required = QtCore.Signal(str)
