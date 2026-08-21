@@ -561,8 +561,10 @@ def remove_tmp_data() -> None:
     for name in [PUREREF_METADATA_CREATE_CONTEXT,
                  PUREREF_SECTION_NAME_INSTANCES,
                  PUREREF_SECTION_NAME_CONTAINERS]:
+        # PureRef would launch untitled.pur file from
+        # temp directory when there is no last workfile.
         json_dir = os.path.join(
-            work_dir, ".pureref_metadata", name).replace(
+            work_dir, ".pureref_metadata", "untitled", name).replace(
                 "\\", "/"
             )
         if not os.path.exists(json_dir):
