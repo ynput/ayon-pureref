@@ -464,6 +464,7 @@ class BaseCommunicator:
         self.websocket_server.stop()
 
     def _exit(self, exit_code=None):
+        emit_event("application.exit")
         self._stop_webserver()
         if exit_code is not None:
             self.exit_code = exit_code

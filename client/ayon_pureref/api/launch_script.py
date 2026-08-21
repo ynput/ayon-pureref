@@ -41,11 +41,14 @@ def main(launch_args):
 
     def process_in_main_thread():
         """Execution of `MainThreadItem`."""
+        if communicator.process.poll() is not None:
+            qt_app.quit()
+            return
         item = communicator.main_thread_listen()
         if item:
             item.execute()
 
-    timer = QtCore.QTimer()
+    timer = QtCore.QTimer(qt_app)
     timer.setInterval(100)
     timer.timeout.connect(process_in_main_thread)
     timer.start()
@@ -72,7 +75,11 @@ def main(launch_args):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
             u"WebsocketServer"
         )
+    def cleanup():
+        timer.stop()
+        communicator.stop()
 
+    qt_app.aboutToQuit.connect(cleanup)
     # Run Qt application event processing
     sys.exit(qt_app.exec_())
 
