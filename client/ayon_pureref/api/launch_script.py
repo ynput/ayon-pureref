@@ -75,6 +75,7 @@ def main(launch_args):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
             u"WebsocketServer"
         )
+
     def cleanup():
         timer.stop()
         communicator.stop()
