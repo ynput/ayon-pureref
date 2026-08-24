@@ -575,7 +575,7 @@ class BaseCommunicator:
             command (list): List of command arguments to execute in PureRef.
         """
         pureref_exe = os.environ["PUREREF_EXE"]
-        proc = subprocess.Popen([pureref_exe, *command], shell=True)  # ruff: ignore[subprocess-popen-with-shell-equals-true]
+        proc = subprocess.Popen([pureref_exe, *command])
         proc.wait()
 
 
