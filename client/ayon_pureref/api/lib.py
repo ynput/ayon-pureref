@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import time
 from .communication_server import CommunicationWrapper
 
 
@@ -93,6 +94,8 @@ def save_pureref_file(
         "-c", "exit",
     ]
     execute_pureref_command(command, communicator)
+    # Wait a bit before asking PureRef to load back the latest file
+    time.sleep(0.5)
     # asking PureRef to load back the latest file
     execute_pureref_command([f"{file_path}"], communicator)
     return file_path
