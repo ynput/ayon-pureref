@@ -576,7 +576,9 @@ class BaseCommunicator:
         """
         pureref_exe = os.environ["PUREREF_EXE"]
         proc = subprocess.Popen([pureref_exe, *command])
-        proc.wait()
+
+        threading.Thread(target=proc.wait(), daemon=True).start()
+        return proc
 
 
 class QtCommunicator(BaseCommunicator):
