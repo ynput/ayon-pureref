@@ -576,7 +576,7 @@ class BaseCommunicator:
         """
         pureref_exe = os.environ["PUREREF_EXE"]
         proc = subprocess.Popen([pureref_exe, *command])
-        proc.wait(timeout=10)
+        proc.wait(timeout=100)
 
 
 class QtCommunicator(BaseCommunicator):
