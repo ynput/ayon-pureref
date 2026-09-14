@@ -1,8 +1,6 @@
 """Set the ini file for PureRef settings configuration."""
-import os
 
 from ayon_applications import LaunchTypes, PreLaunchHook
-from ayon_pureref import PUREREF_ADDON_ROOT
 
 
 class ConfigurePureRefSettings(PreLaunchHook):
