@@ -21,4 +21,10 @@ class ConfigurePureRefSettings(PreLaunchHook):
         )
         # ask the system to install the settings.ini file as the
         # default PureRef settings
-        self.launch_context.launch_args.extend(["-S", settings_ini_path])
+        self.launch_context.launch_args.extend(
+            ["-S", "OpenFilesIn=CurrentWindow",
+             "-S", "Unsaved_Scene_Behavior=Discard",
+             "-S", "Always_On_Top=true",
+             "-S", "PeriodicSave=true"
+             ]
+        )
