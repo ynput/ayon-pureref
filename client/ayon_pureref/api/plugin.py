@@ -1,5 +1,7 @@
 from ayon_core.pipeline import CreatedInstance, Creator, AutoCreator
 from ayon_core.pipeline.create.creator_plugins import cache_and_get_instances
+from ayon_core.lib import BoolDef
+
 
 SHARED_DATA_KEY = "ayon.pureref.instances"
 
@@ -46,6 +48,9 @@ class PureRefCreator(Creator, PureRefCreatorBase):
         product_type = instance_data.get("productType")
         if not product_type:
             product_type = self.product_base_type
+        creator_attributes = instance_data.setdefault(
+            "creator_attributes", dict())
+        creator_attributes["review"] = pre_create_data.get("review", True)
         new_instance = CreatedInstance(
             product_base_type=self.product_base_type,
             product_type=product_type,
@@ -86,6 +91,17 @@ class PureRefCreator(Creator, PureRefCreatorBase):
         instances_data.append(new_instance.data_to_store())
         self.host.write_instances(instances_data)
         self._add_instance_to_context(new_instance)
+
+    def get_instance_attr_defs(self):
+        return [
+            BoolDef("review",
+                    label="Review",
+                    tooltip="Mark as reviewable",
+                    default=True),
+        ]
+
+    def get_pre_create_attr_defs(self):
+        return self.get_instance_attr_defs()
 
 
 class PureRefAutoCreator(AutoCreator, PureRefCreatorBase):
