@@ -1,0 +1,6 @@
+[project]
+name="pureref"
+description="AYON PureRef addon."
+
+[ayon.runtimeDependencies]
+aiohttp_json_rpc = "*"
