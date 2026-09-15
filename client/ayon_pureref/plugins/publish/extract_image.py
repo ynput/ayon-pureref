@@ -51,6 +51,11 @@ class ExtractImage(publish.Extractor,
         "stagingDir": staging_dir,
         }
 
+        creator_attributes = instance.data["creator_attributes"]
+        if creator_attributes.get("review", False):
+            instance.data["families"].append("review")
+            representation["tags"] = ["review"]
+
         instance.data["representations"].append(representation)
         self.log.info(
             f"Extracted instance '{instance.name}' to: {filepath}"
