@@ -56,8 +56,8 @@ class ExtractImage(publish.Extractor,
             instance.data["families"].append("review")
             representation["tags"] = ["review"]
             # fallback frame for single images
-            representation["frameStart"] = 1001
-            representation["frameEnd"] = 1001
+            instance.data["frameStart"] = 1001
+            instance.data["frameEnd"] = 1001
 
         instance.data["representations"].append(representation)
         self.log.info(
