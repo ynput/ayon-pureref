@@ -55,6 +55,9 @@ class ExtractImage(publish.Extractor,
         if creator_attributes.get("review", False):
             instance.data["families"].append("review")
             representation["tags"] = ["review"]
+            # fallback frame for single images
+            representation["frameStart"] = 1001
+            representation["frameEnd"] = 1001
 
         instance.data["representations"].append(representation)
         self.log.info(
