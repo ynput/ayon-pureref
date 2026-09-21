@@ -191,6 +191,7 @@ def containerise(
         "namespace": namespace,
         "loader": str(loader),
         "representation": str(context["representation"]["id"]),
+        "project_name": context["project"]["name"],
     }
     if containers is None:
         containers = get_containers()
