@@ -6,7 +6,7 @@ from ayon_core.pipeline import registered_host
 class CollectCurrentFile(pyblish.api.ContextPlugin):
     """Collect the current file path and add it to the context data."""
     label = "Collect Current File"
-    order = pyblish.api.CollectorOrder - 0.4
+    order = pyblish.api.CollectorOrder - 0.5
     hosts = ["pureref"]
 
     def process(self, context: pyblish.api.Context) -> None:
