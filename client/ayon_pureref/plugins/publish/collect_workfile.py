@@ -1,5 +1,4 @@
 """Collect workfile plugin."""
-import json
 import os
 
 import pyblish.api
